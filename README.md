@@ -1,3 +1,6 @@
 # Machine-Learning
 
-A report describing all tasks can be found at: ML_project.md
+This repository contains my report for the "Practical Machine Learning" course project, which is part of the Coursera Data Science Specialization.
+
+ML_project.md
+ML_project.html: compiled from R Markdown
