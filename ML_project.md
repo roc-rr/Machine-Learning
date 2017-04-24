@@ -15,14 +15,36 @@ download.file(test.url, destfile = "pml-test.csv", method = "curl",quiet = TRUE)
 
 ### Transform data. Removing NAs and useless predictors
 
-    ## [1] 100
+``` r
+##training data
+training <- read.csv("pml-training.csv", na.strings = c("NA","#DIV/0!",""))
+nas <- apply(training, 2, function(x){any(is.na(x))})
+sum(nas) ##100. Only 60 variables have complete data
+```
 
     ## [1] 100
-
-### Cross validation
 
 ``` r
-#Split the training data into training and validation set
+ok <- training[,!nas]
+training <- ok[, -c(1:7)] ##19622x53
+
+##Test data
+testing <- read.csv("pml-test.csv", na.strings = c("NA","#DIV/0!",""))
+nas <- apply(testing, 2, function(x){any(is.na(x))})
+sum(nas) ##100. Only 60 variables have complete data
+```
+
+    ## [1] 100
+
+``` r
+ok <- testing[,!nas]
+testing <- ok[, -c(1:7)] ## 20x53
+```
+
+### Building model. Cross validation
+
+``` r
+#Split the training data into training and validation set. For reproducibility the seed is set
 set.seed(12345)
 inTrain <- createDataPartition(training$classe, p=0.6, list = FALSE)
 Training <- training[inTrain,]
